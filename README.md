@@ -111,4 +111,4 @@ Se você rodar o projeto e testar um domínio, verá que ele já está funcionan
 - **Novos Cenários de Teste:** Implementação de testes adicionais para validar regras de negócio críticas, como o uso correto de Cache (TTL), expiração de dados e validação de inputs inválidos.
   
 ### 4. Frontend
-- **Formatação:** Ajuste na estrutura HTML para exibir os resultados (Name Servers, IP, Hospedagem) em formato de lista (`<ul>`), melhorando a legibilidade conforme o layout de referência.
+- **Modernização com Blazor:** Reescrita completa da camada de apresentação utilizando **Blazor**, substituindo o antigo *Vanilla JS*. Isso atende ao requisito de modernização do frontend sugerido no desafio.
