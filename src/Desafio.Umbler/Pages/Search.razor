@@ -1,0 +1,52 @@
+﻿@page "/"
+@using Desafio.Umbler.Interfaces
+@using Desafio.Umbler.Services
+@using Desafio.Umbler.ViewModels
+@using Microsoft.AspNetCore.Components.Forms
+@inject IDomainService DomainService
+
+<div class="container" style="margin-top: 50px;">
+    <h3>Consultar Domínio</h3>
+
+    <EditForm Model="@model" OnValidSubmit="@Consultar">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label>Domínio</label>
+            <InputText class="form-control" @bind-Value="model.Domain" placeholder="umbler.com" required/>
+            <small class="text-muted">Digite um domínio válido (ex: site.com)</small>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Obter Informações</button>
+    </EditForm>
+
+    @if (resultado != null)
+    {
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">@resultado.Domain</h5>
+                <p><strong>Hospedado em:</strong> @resultado.HostedAt</p>
+                <p><strong>IP:</strong> @resultado.Ip</p>
+                <p><strong>NameServers:</strong> @resultado.NameServers</p>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private DomainRequest model = new DomainRequest();
+    private DomainResponseViewModel resultado;
+
+    private async Task Consultar()
+    {
+        resultado = await DomainService.GetResultAsync(model.Domain);
+    }
+
+    public class DomainRequest
+    {
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "O domínio é obrigatório.")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^.+\..+$", ErrorMessage = "Formato inválido.")]
+        public string Domain { get; set; }
+    }
+}
