@@ -93,4 +93,22 @@ Se você rodar o projeto e testar um domínio, verá que ele já está funcionan
 
 # Modificações:
 
-- DESCREVA AQUI O OBJETIVO DAS MODIFICAÇÕES...
+### 1. Arquitetura e Backend
+- **Refatoração para Camadas (Services):** A lógica de negócios foi desacoplada do Controller e movida para a classe `DomainService`, seguindo princípios de SOLID e Clean Code.
+- **DTOs (ViewModel):** Implementação do `DomainResponseViewModel` para evitar o vazamento de dados sensíveis da entidade (como ID e colunas de controle) para o frontend.
+- **Injeção de Dependência:** Configuração correta do container de DI para o `DatabaseContext`, `IWhoisClient` e `IDomainService`.
+- **Validação de Backend:** Adicionada verificação de nulidade e formato de domínio antes de processar a requisição.
+
+### 2. Banco de Dados e Integração
+- **MySQL Real:** Configuração do Entity Framework para utilizar MySQL em vez de InMemory database para a aplicação em produção.
+- **Migrations:** Criação e aplicação de migrations para garantir a estrutura correta das tabelas.
+- **Whois Client Real:** Correção da implementação do `WhoisClient` (que possuía um mock hardcoded) para realizar consultas reais à internet utilizando a biblioteca `Whois.NET`.
+- **Tratamento de Dados:** Implementação de lógica de parser com Regex e LINQ para extrair corretamente os *Name Servers* e a empresa de hospedagem (*Registrar*) de diferentes formatos de resposta Whois.
+
+### 3. Testes e Qualidade
+- **Mocking:** Utilização da biblioteca **Moq** para simular o comportamento do `IWhoisClient` e do Banco de Dados nos testes unitários.
+- **Correção de Testes:** Ajuste dos testes antigos que falhavam devido à mudança de tipos de retorno e dependências. Cobertura de testes garantida para cenários de sucesso e domínios não encontrados.
+- **Novos Cenários de Teste:** Implementação de testes adicionais para validar regras de negócio críticas, como o uso correto de Cache (TTL), expiração de dados e validação de inputs inválidos.
+  
+### 4. Frontend
+- **Formatação:** Ajuste na estrutura HTML para exibir os resultados (Name Servers, IP, Hospedagem) em formato de lista (`<ul>`), melhorando a legibilidade conforme o layout de referência.
